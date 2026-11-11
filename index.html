@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Room Reservation - Ramathibodi School of Nursing</title>
+    <!-- ไอคอนเว็บไซต์ (favicon) — ไฟล์รูปอยู่โฟลเดอร์เดียวกับ index.html -->
+    <link rel="icon" href="favicon.ico" sizes="48x48">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -78,6 +83,23 @@ body{background:#f5f3ff!important}
 .dark #main-navigation-tabs{background:rgba(15,13,40,.6)!important;border-color:rgba(124,92,230,.25)!important}
 
 @media print{#aurora-bg{display:none!important}body{background:#fff!important}}
+/* 📱 แถบเมนูบนมือถือ: ไอคอนบน + ชื่อสั้นล่าง แบ่งความกว้างเท่ากัน ไม่ต้องเลื่อน (จอคอมพิวเตอร์คงเดิม) */
+@media (max-width:639px){
+  #main-navigation-tabs > div{padding-left:4px!important;padding-right:4px!important;overflow-x:visible!important}
+  #main-navigation-tabs nav{width:100%!important;display:flex!important;justify-content:space-between;padding-top:6px!important;padding-bottom:0!important}
+  #main-navigation-tabs nav > *{margin-left:0!important;margin-right:0!important}
+  #main-navigation-tabs .tab-btn:not(.hidden){flex:1 1 0;min-width:0;flex-direction:column;gap:3px;padding:2px 2px 6px!important;font-size:11px!important;line-height:1.2}
+  #main-navigation-tabs .tab-btn > *{margin:0!important}
+  #main-navigation-tabs .tab-btn i,#main-navigation-tabs .tab-btn svg{width:20px!important;height:20px!important}
+  #main-navigation-tabs .tab-btn span{display:none}
+  #main-navigation-tabs .tab-btn::after{content:attr(data-short);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+}
+/* 📱 ปุ่มส่งคำร้อง/ล้างข้อมูลบนมือถือ: เรียงบน-ล่าง เต็มความกว้าง ข้อความไม่ตัดกลางคำ */
+@media (max-width:639px){
+  #form-action-buttons{flex-direction:column;gap:10px}
+  #form-action-buttons > *{margin:0!important;width:100%;white-space:nowrap}
+}
+
 /* ปิดการเคลื่อนไหวทั้งหมดเพื่อประหยัดทรัพยากรเครื่อง (พื้นหลังนิ่ง หน้าตาเหมือนเดิม) */
 #aurora-bg *,#main-header.glass-header,#main-footer{animation:none!important;will-change:auto!important}
     </style>
@@ -210,28 +232,28 @@ body{background:#f5f3ff!important}
     <div id="main-navigation-tabs" class="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-colors no-print">
         <div class="max-w-7xl mx-auto px-2 sm:px-4 overflow-x-auto">
             <nav class="flex items-center space-x-4 sm:space-x-8 py-3 w-max mx-auto whitespace-nowrap">
-                <button onclick="switchTab('booking')" id="tab-booking" class="tab-btn flex items-center justify-center space-x-2 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 dark:text-blue-400 px-1 pb-2 shrink-0">
+                <button onclick="switchTab('booking')" id="tab-booking" data-short="จองห้อง" class="tab-btn flex items-center justify-center space-x-2 text-sm font-semibold border-b-2 border-blue-600 text-blue-600 dark:text-blue-400 px-1 pb-2 shrink-0">
                     <i data-lucide="calendar-plus" class="w-4 h-4"></i>
                     <span>จองห้องออนไลน์</span>
                 </button>
-                <button onclick="switchTab('calendar-view')" id="tab-calendar-view" class="tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
+                <button onclick="switchTab('calendar-view')" id="tab-calendar-view" data-short="ปฏิทิน" class="tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
                     <i data-lucide="calendar-range" class="w-4 h-4"></i>
                     <span>ปฏิทินกลางรวม</span>
                 </button>
-                <button onclick="switchTab('guide')" id="tab-guide" class="tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
+                <button onclick="switchTab('guide')" id="tab-guide" data-short="คู่มือ" class="tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
                     <i data-lucide="help-circle" class="w-4 h-4"></i>
                     <span>คู่มือการใช้งาน</span>
                 </button>
                 
-                <button onclick="switchTab('daily-grid')" id="tab-daily-grid" class="hidden tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
+                <button onclick="switchTab('daily-grid')" id="tab-daily-grid" data-short="ตารางวัน" class="hidden tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
                     <i data-lucide="clock" class="w-4 h-4"></i>
                     <span>ตารางห้องรายวัน</span>
                 </button>
-                <button onclick="switchTab('admin-panel')" id="tab-admin-panel" class="hidden tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
+                <button onclick="switchTab('admin-panel')" id="tab-admin-panel" data-short="อนุมัติ" class="hidden tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
                     <i data-lucide="shield-check" class="w-4 h-4"></i>
                     <span>อนุมัติคำขอ (Admin)</span>
                 </button>
-                <button onclick="switchTab('analytics')" id="tab-analytics" class="hidden tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
+                <button onclick="switchTab('analytics')" id="tab-analytics" data-short="แดชบอร์ด" class="hidden tab-btn flex items-center justify-center space-x-2 text-sm font-medium text-slate-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 px-1 pb-2 shrink-0">
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     <span>วิเคราะห์แดชบอร์ด</span>
                 </button>
@@ -244,8 +266,8 @@ body{background:#f5f3ff!important}
         
         <!-- ======================= 1. BOOKING FORM TAB ======================= -->
         <section id="content-booking" class="tab-content block no-print">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm transition-colors">
+            <div class="grid grid-cols-1 gap-8">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm transition-colors">
                     <div class="flex items-center space-x-3 mb-6">
                         <div class="p-2 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400">
                             <i data-lucide="pen-tool" class="w-5 h-5"></i>
@@ -257,7 +279,7 @@ body{background:#f5f3ff!important}
                     </div>
 
                     <!-- 📞 มือถือ/แท็บเล็ต: แสดงเบอร์ติดต่อไว้บนสุดของฟอร์ม (บนคอมพิวเตอร์อยู่คอลัมน์ขวา) -->
-                    <div class="lg:hidden mb-5 flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900 text-xs">
+                    <div class="mb-5 flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900 text-xs">
                         <i data-lucide="phone" class="w-4 h-4 text-emerald-600 shrink-0"></i>
                         <span class="text-emerald-800 dark:text-emerald-300"><strong>เบอร์ติดต่อหน่วยกายภาพ</strong> (งานกายภาพสถานที่) โทรภายใน <strong>1604</strong></span>
                     </div>
@@ -605,7 +627,7 @@ body{background:#f5f3ff!important}
                             </p>
                         </div>
 
-                        <div class="flex space-x-4 pt-4">
+                        <div id="form-action-buttons" class="flex space-x-4 pt-4">
                             <button type="submit" class="flex-grow py-3 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-sm rounded-xl shadow-lg shadow-blue-500/10 transition-all flex items-center justify-center space-x-2">
                                 <i data-lucide="check-square" class="w-5 h-5"></i>
                                 <span>ส่งคำร้องขอจองสถานที่</span>
@@ -615,51 +637,6 @@ body{background:#f5f3ff!important}
                             </button>
                         </div>
                     </form>
-                </div>
-
-                <div class="space-y-6 lg:sticky lg:top-24 lg:self-start">
-                    <div class="hidden lg:block bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm transition-colors">
-                        <h3 class="font-bold text-sm mb-4">เบอร์ติดต่อหน่วยกายภาพ (เบอร์ภายใน)</h3>
-                        <div class="space-y-4 text-xs">
-                            <div class="flex items-center space-x-3">
-                                <div class="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600">
-                                    <i data-lucide="phone" class="w-4 h-4"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold">(งานกายภาพสถานที่)</p>
-                                    <p class="text-slate-500">โทรติดต่อภายใน 1604</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-gradient-to-br from-blue-900 to-indigo-950 text-white rounded-2xl p-6 shadow-md relative overflow-hidden">
-                        <div class="absolute -right-10 -bottom-10 opacity-10">
-                            <i data-lucide="building" class="w-48 h-48"></i>
-                        </div>
-                        <h3 class="font-bold text-lg mb-4 flex items-center space-x-2">
-                            <i data-lucide="info" class="w-5 h-5 text-amber-400"></i>
-                            <span>ทำไมต้องจองผ่านระบบนี้?</span>
-                        </h3>
-                        <p class="text-xs text-slate-200 mb-4 leading-relaxed">
-                            เพราะห้องเรียนและห้องประชุมทุกห้องมีจำกัด และหลายฝ่ายต้องใช้พร้อมกัน ระบบนี้ทำหน้าที่เป็น "ศูนย์กลาง" คิวจอง ให้เจ้าหน้าที่งานกายภาพเห็นภาพรวมทั้งหมดก่อนจัดสรร จึงไม่มีปัญหาจองห้องซ้ำซ้อนหรือชนตารางกัน ท่านเพียงกรอกจำนวนผู้ใช้และวัตถุประสงค์ ที่เหลือให้เจ้าหน้าที่จัดห้องที่เหมาะสมที่สุดให้แทน
-                        </p>
-                        <ul class="text-xs space-y-3 text-slate-200">
-                            <li class="flex items-start space-x-2">
-                                <span class="text-amber-400 mt-0.5">✔</span>
-                                <span>ป้องกันการจองห้องซ้ำซ้อนหรือชนกันระหว่างหน่วยงาน</span>
-                            </li>
-                            <li class="flex items-start space-x-2">
-                                <span class="text-amber-400 mt-0.5">✔</span>
-                                <span>จัดห้องให้พอดีกับจำนวนผู้ใช้จริง ไม่ต้องเสียเวลาหาห้องเอง</span>
-                            </li>
-                            <li class="flex items-start space-x-2">
-                                <span class="text-amber-400 mt-0.5">✔</span>
-                                <span>ตรวจสอบสถานะคำขอและห้องว่างได้ทันทีแบบเรียลไทม์</span>
-                            </li>
-                        </ul>
-                    </div>
-
                 </div>
             </div>
         </section>
@@ -741,6 +718,33 @@ body{background:#f5f3ff!important}
 
         <!-- ======================= 3. USER GUIDE TAB ======================= -->
         <section id="content-guide" class="tab-content hidden no-print">
+                <div class="max-w-4xl mx-auto mb-6 bg-gradient-to-br from-blue-900 to-indigo-950 text-white rounded-2xl p-6 shadow-md relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10">
+                        <i data-lucide="building" class="w-48 h-48"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-4 flex items-center space-x-2">
+                        <i data-lucide="info" class="w-5 h-5 text-amber-400"></i>
+                        <span>ทำไมต้องจองผ่านระบบนี้?</span>
+                    </h3>
+                    <p class="text-xs text-slate-200 mb-4 leading-relaxed">
+                        เพราะห้องเรียนและห้องประชุมทุกห้องมีจำกัด และหลายฝ่ายต้องใช้พร้อมกัน ระบบนี้ทำหน้าที่เป็น "ศูนย์กลาง" คิวจอง ให้เจ้าหน้าที่งานกายภาพเห็นภาพรวมทั้งหมดก่อนจัดสรร จึงไม่มีปัญหาจองห้องซ้ำซ้อนหรือชนตารางกัน ท่านเพียงกรอกจำนวนผู้ใช้และวัตถุประสงค์ ที่เหลือให้เจ้าหน้าที่จัดห้องที่เหมาะสมที่สุดให้แทน
+                    </p>
+                    <ul class="text-xs space-y-3 text-slate-200">
+                        <li class="flex items-start space-x-2">
+                            <span class="text-amber-400 mt-0.5">✔</span>
+                            <span>ป้องกันการจองห้องซ้ำซ้อนหรือชนกันระหว่างหน่วยงาน</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <span class="text-amber-400 mt-0.5">✔</span>
+                            <span>จัดห้องให้พอดีกับจำนวนผู้ใช้จริง ไม่ต้องเสียเวลาหาห้องเอง</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <span class="text-amber-400 mt-0.5">✔</span>
+                            <span>ตรวจสอบสถานะคำขอและห้องว่างได้ทันทีแบบเรียลไทม์</span>
+                        </li>
+                    </ul>
+                </div>
+
             <div class="max-w-4xl mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm transition-colors">
                 <h2 class="text-xl font-bold mb-6 flex items-center space-x-3 text-blue-600 dark:text-blue-400">
                     <i data-lucide="help-circle" class="w-6 h-6"></i>
